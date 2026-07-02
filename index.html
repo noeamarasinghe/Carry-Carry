@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,700;1,900&amp;display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:#08080a;font-family:'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  ::selection{background:#ED1C24;color:#fff}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-track{background:#0c0c0f}
+  ::-webkit-scrollbar-thumb{background:#26262b;border-radius:0}
+  ::-webkit-scrollbar-thumb:hover{background:#ED1C24}
+  input{font-family:'Archivo',sans-serif}
+  button{transition:transform .15s cubic-bezier(.2,.8,.3,1.35),box-shadow .22s ease,background .2s ease,border-color .2s ease,color .2s ease,filter .2s ease}
+  button:hover{transform:translateY(-3px);filter:brightness(1.08)}
+  button:active{transform:translateY(1px) scale(.95);transition-duration:.05s}
+  @keyframes ccGlow{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.9;transform:scale(1.06)}}
+  @keyframes ccFadeUp{from{transform:translateY(22px)}to{transform:translateY(0)}}
+  @keyframes ccFadeIn{from{transform:scale(.992)}to{transform:scale(1)}}
+  @keyframes ccFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}
+  @keyframes ccScan{from{background-position:0 0}to{background-position:0 64px}}
+  @keyframes ccPop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+  @keyframes ccSheen{from{transform:translateX(-120%)}to{transform:translateX(220%)}}
+  @keyframes ccRiftFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  @keyframes ccRiftGlow{0%,100%{opacity:.4}50%{opacity:.85}}
+  @keyframes ccRiver{from{background-position:0 0}to{background-position:0 -120px}}
+  @keyframes ccPing{0%{transform:translate(-50%,-50%) scale(.92);opacity:.9}50%{transform:translate(-50%,-50%) scale(1.08);opacity:.45}100%{transform:translate(-50%,-50%) scale(.92);opacity:.9}}
+  @keyframes ccZoom{from{transform:scale(.92)}to{transform:scale(1)}}
+  @keyframes ccEmber{0%{transform:translate(0,30px) scale(.5);opacity:0}15%{opacity:.9}50%{transform:translate(16px,-90px) scale(1)}85%{opacity:.55}100%{transform:translate(-12px,-180px) scale(.6);opacity:0}}
+</style>
+</helmet>
+
+<div style="position:fixed;inset:0;overflow:hidden;background:#06080b">
+  <sc-for list="{{ bgLayers }}" as="b" hint-placeholder-count="1">
+    <div style="{{ b.style }}"></div>
+  </sc-for>
+  <div style="position:absolute;inset:0;background:radial-gradient(120% 90% at 50% -10%, rgba(237,28,36,.32), transparent 55%),radial-gradient(85% 70% at 50% 120%, rgba(237,28,36,.12), transparent 60%),linear-gradient(180deg, rgba(6,8,11,.42), rgba(6,8,11,.72))"></div>
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:64px 64px;animation:ccScan 6s linear infinite;mask-image:radial-gradient(80% 80% at 50% 40%,#000,transparent);opacity:.4"></div>
+  <div style="position:absolute;inset:0;pointer-events:none">
+    <sc-for list="{{ particles }}" as="p" hint-placeholder-count="0">
+      <div style="{{ p.style }}"></div>
+    </sc-for>
+  </div>
+  <div style="position:absolute;inset:0;box-shadow:inset 0 0 240px 70px rgba(0,0,0,.8)"></div>
+</div>
+
+<div style="position:fixed;inset:0;display:flex;flex-direction:column;font-family:'Archivo',sans-serif;color:#fff">
+
+  <header style="flex:0 0 auto;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:blur(6px);background:rgba(8,8,10,.5);z-index:20">
+    <div onClick="{{ goAccueil }}" style="display:flex;align-items:center;gap:11px;cursor:pointer">
+      <img src="assets/skull.png" alt="" style="width:34px;height:34px;filter:drop-shadow(0 0 10px rgba(237,28,36,.7))">
+      <span style="font-family:'Anton';font-size:22px;letter-spacing:.5px;transform:skewX(-8deg);display:inline-block">CARRY CARRY</span>
+    </div>
+    <sc-if value="{{ showStepper }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:7px">
+        <sc-for list="{{ steps }}" as="st" hint-placeholder-count="4">
+          <div style="{{ st.dotStyle }}"></div>
+          <span style="{{ st.labelStyle }}">{{ st.label }}</span>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ showAuthBtn }}" hint-placeholder-val="{{ true }}">
+      <button onClick="{{ goConnexion }}" style="font-family:'Archivo';font-weight:800;font-style:italic;font-size:12px;letter-spacing:1.5px;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.25);padding:9px 18px;cursor:pointer;text-transform:uppercase" style-hover="border-color:#ED1C24;color:#ED1C24">Connexion</button>
+    </sc-if>
+  </header>
+
+  <main style="flex:1 1 auto;overflow-y:auto;position:relative;z-index:10">
+
+    <!-- ============ ACCUEIL ============ -->
+    <sc-if value="{{ isAccueil }}" hint-placeholder-val="{{ true }}">
+      <section data-screen-label="Accueil" style="min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px;animation:ccFadeIn .5s ease">
+        <img src="assets/skull.png" alt="Carry Carry" style="width:150px;margin-bottom:8px;filter:drop-shadow(0 0 38px rgba(237,28,36,.85));animation:ccFloat 5s ease-in-out infinite">
+        <h1 style="font-family:'Anton';font-size:clamp(56px,12vw,150px);line-height:.82;letter-spacing:1px;transform:skewX(-9deg);text-shadow:0 8px 40px rgba(0,0,0,.6);margin:6px 0">CARRY CARRY</h1>
+        <p style="font-family:'Anton';font-size:clamp(22px,4.4vw,46px);color:#ED1C24;transform:skewX(-9deg);letter-spacing:2px;margin-bottom:6px;text-shadow:0 0 28px rgba(237,28,36,.55)">RANK UP</p>
+        <p style="max-width:520px;color:rgba(255,255,255,.6);font-size:16px;line-height:1.55;margin:14px 0 36px">Coaching League of Legends par des joueurs Challenger. Choisis ton elo, ton coach, ton créneau — et grimpe pour de vrai.</p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
+          <button onClick="{{ goElo }}" style="position:relative;overflow:hidden;font-family:'Archivo';font-weight:900;font-style:italic;font-size:17px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:#ED1C24;border:none;padding:18px 46px;cursor:pointer;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);box-shadow:0 0 34px rgba(237,28,36,.5)" style-hover="background:#ff2b34">Try Now
+            <span style="position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);animation:ccSheen 3.4s linear infinite"></span>
+          </button>
+          <button onClick="{{ goConnexion }}" style="font-family:'Archivo';font-weight:900;font-style:italic;font-size:17px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.3);padding:18px 40px;cursor:pointer" style-hover="border-color:#fff;background:rgba(255,255,255,.05)">Login</button>
+        </div>
+        <div style="display:flex;gap:34px;margin-top:54px;flex-wrap:wrap;justify-content:center">
+          <sc-for list="{{ heroStats }}" as="s" hint-placeholder-count="3">
+            <div style="text-align:center">
+              <div style="font-family:'Anton';font-size:38px;color:#fff;transform:skewX(-8deg)">{{ s.value }}</div>
+              <div style="font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-top:2px">{{ s.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ============ CONNEXION ============ -->
+    <sc-if value="{{ isConnexion }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Connexion" style="min-height:100%;display:flex;align-items:center;justify-content:center;padding:60px 24px;animation:ccFadeUp .45s ease">
+        <div style="width:100%;max-width:420px">
+          <div style="text-align:center;margin-bottom:30px">
+            <img src="assets/skull.png" alt="" style="width:56px;filter:drop-shadow(0 0 18px rgba(237,28,36,.7));margin-bottom:14px">
+            <h2 style="font-family:'Anton';font-size:46px;transform:skewX(-9deg);line-height:.9">CONNEXION</h2>
+            <p style="color:rgba(255,255,255,.5);font-size:14px;margin-top:8px">Connecte-toi pour réserver ton coaching.</p>
+          </div>
+          <div style="background:rgba(20,20,24,.78);border:1px solid rgba(255,255,255,.08);padding:28px;clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)">
+            <label style="display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:7px">Identifiant Riot</label>
+            <input placeholder="TonPseudo#EUW" style="width:100%;background:#0c0c0f;border:1px solid rgba(255,255,255,.1);color:#fff;padding:13px 14px;font-size:15px;margin-bottom:18px;outline:none" style-focus="border-color:#ED1C24">
+            <label style="display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:7px">Mot de passe</label>
+            <input type="password" value="motdepasse" style="width:100%;background:#0c0c0f;border:1px solid rgba(255,255,255,.1);color:#fff;padding:13px 14px;font-size:15px;margin-bottom:10px;outline:none" style-focus="border-color:#ED1C24">
+            <div style="text-align:right;margin-bottom:22px"><span style="font-size:12px;color:rgba(255,255,255,.4);cursor:pointer" style-hover="color:#ED1C24">Mot de passe oublié ?</span></div>
+            <button onClick="{{ goElo }}" style="width:100%;font-family:'Archivo';font-weight:900;font-style:italic;font-size:16px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:#ED1C24;border:none;padding:16px;cursor:pointer;box-shadow:0 0 26px rgba(237,28,36,.45)" style-hover="background:#ff2b34">Se connecter</button>
+            <div style="display:flex;align-items:center;gap:12px;margin:20px 0;color:rgba(255,255,255,.3);font-size:11px"><div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div>OU<div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div></div>
+            <button onClick="{{ goElo }}" style="width:100%;font-family:'Archivo';font-weight:700;font-size:14px;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.18);padding:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px" style-hover="border-color:#ED1C24">Continuer avec Discord</button>
+          </div>
+          <p style="text-align:center;color:rgba(255,255,255,.45);font-size:13px;margin-top:18px">Pas de compte ? <span onClick="{{ goElo }}" style="color:#ED1C24;font-weight:700;cursor:pointer">Créer un compte</span></p>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ============ CHOISIR SON ELO ============ -->
+    <sc-if value="{{ isElo }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Choisir son elo" style="min-height:100%;display:flex;flex-direction:column;align-items:center;padding:48px 24px 70px;animation:ccFadeUp .45s ease">
+        <p style="font-size:12px;letter-spacing:3px;color:#ED1C24;text-transform:uppercase;font-weight:800">Étape 1 / 4</p>
+        <h2 style="font-family:'Anton';font-size:clamp(38px,7vw,64px);transform:skewX(-9deg);line-height:.9;text-align:center;margin:6px 0 6px">CHOISIS TON ELO</h2>
+        <p style="color:rgba(255,255,255,.55);font-size:15px;margin-bottom:24px;text-align:center">On adapte ton coach à ton niveau actuel.</p>
+        <div style="display:inline-flex;background:rgba(20,20,24,.8);border:1px solid rgba(255,255,255,.1);padding:4px;margin-bottom:34px">
+          <button onClick="{{ setSolo }}" style="{{ soloTabStyle }}">SoloQ</button>
+          <button onClick="{{ setFlex }}" style="{{ flexTabStyle }}">Flex</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;width:100%;max-width:840px">
+          <sc-for list="{{ ranks }}" as="r" hint-placeholder-count="10">
+            <button onClick="{{ r.select }}" style="{{ r.style }}">
+              <div style="{{ r.badgeStyle }}">{{ r.short }}</div>
+              <div style="font-family:'Anton';font-size:21px;transform:skewX(-7deg);margin-top:10px">{{ r.label }}</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.45);letter-spacing:1px;margin-top:2px">{{ r.sub }}</div>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ============ TROUVER UN COACH ============ -->
+    <sc-if value="{{ isCoachs }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Trouver un coach" style="min-height:100%;padding:46px 24px 70px;animation:ccFadeUp .45s ease">
+        <div style="max-width:1040px;margin:0 auto">
+          <div style="text-align:center;margin-bottom:10px">
+            <p style="font-size:12px;letter-spacing:3px;color:#ED1C24;text-transform:uppercase;font-weight:800">Étape 2 / 4</p>
+            <h2 style="font-family:'Anton';font-size:clamp(38px,7vw,64px);transform:skewX(-9deg);line-height:.9;margin:6px 0">TROUVE TON COACH</h2>
+            <p style="color:rgba(255,255,255,.55);font-size:15px">Niveau ciblé : <span style="color:#fff;font-weight:700">{{ eloLabel }}</span> · {{ queueLabel }}</p>
+          </div>
+          <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin:22px 0 30px">
+            <sc-for list="{{ roleFilters }}" as="f" hint-placeholder-count="6">
+              <button onClick="{{ f.select }}" style="{{ f.style }}">{{ f.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px">
+            <sc-for list="{{ coaches }}" as="c" hint-placeholder-count="6">
+              <div style="{{ c.cardStyle }}">
+                <div style="display:flex;align-items:center;gap:14px">
+                  <div style="{{ c.avatarStyle }}">{{ c.initials }}</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <span style="font-family:'Anton';font-size:23px;transform:skewX(-7deg)">{{ c.name }}</span>
+                      <span style="{{ c.rankPillStyle }}">{{ c.rank }}</span>
+                    </div>
+                    <div style="font-size:12px;color:rgba(255,255,255,.5);letter-spacing:.5px;margin-top:2px">{{ c.role }} · {{ c.meta }}</div>
+                  </div>
+                </div>
+                <p style="font-size:13px;color:rgba(255,255,255,.62);line-height:1.5;margin:14px 0 16px;min-height:38px">{{ c.bio }}</p>
+                <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.08);padding-top:14px">
+                  <div>
+                    <div style="font-family:'Anton';font-size:24px;transform:skewX(-7deg)">{{ c.priceLabel }}<span style="font-family:'Archivo';font-size:12px;font-weight:600;color:rgba(255,255,255,.5)"> /h</span></div>
+                    <div style="font-size:12px;color:#ffc24a;margin-top:1px">★ {{ c.rating }} <span style="color:rgba(255,255,255,.4)">({{ c.reviews }})</span></div>
+                  </div>
+                  <button onClick="{{ c.select }}" style="font-family:'Archivo';font-weight:900;font-style:italic;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#fff;background:#ED1C24;border:none;padding:12px 22px;cursor:pointer;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)" style-hover="background:#ff2b34">Réserver</button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ============ RÉSERVER ============ -->
+    <sc-if value="{{ isReservation }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Réserver un coaching" style="min-height:100%;padding:46px 24px 70px;animation:ccFadeUp .45s ease">
+        <div style="max-width:920px;margin:0 auto">
+          <div style="text-align:center;margin-bottom:30px">
+            <p style="font-size:12px;letter-spacing:3px;color:#ED1C24;text-transform:uppercase;font-weight:800">Étape 3 / 4</p>
+            <h2 style="font-family:'Anton';font-size:clamp(38px,7vw,64px);transform:skewX(-9deg);line-height:.9;margin:6px 0">RÉSERVE TA SESSION</h2>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start">
+            <div style="background:rgba(20,20,24,.78);border:1px solid rgba(255,255,255,.08);padding:26px">
+              <h3 style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:14px">Type de session</h3>
+              <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+                <sc-for list="{{ sessionTypes }}" as="t" hint-placeholder-count="3">
+                  <button onClick="{{ t.select }}" style="{{ t.style }}">
+                    <div><div style="font-weight:800;font-size:15px">{{ t.label }}</div><div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:2px">{{ t.desc }}</div></div>
+                    <div style="font-family:'Anton';font-size:20px;transform:skewX(-7deg);white-space:nowrap">{{ t.priceLabel }}</div>
+                  </button>
+                </sc-for>
+              </div>
+              <h3 style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:14px">Date</h3>
+              <div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:28px">
+                <sc-for list="{{ days }}" as="d" hint-placeholder-count="5">
+                  <button onClick="{{ d.select }}" style="{{ d.style }}">
+                    <div style="font-size:11px;letter-spacing:1px;color:rgba(255,255,255,.55);text-transform:uppercase">{{ d.dow }}</div>
+                    <div style="font-family:'Anton';font-size:22px;transform:skewX(-7deg);line-height:1.1">{{ d.num }}</div>
+                  </button>
+                </sc-for>
+              </div>
+              <h3 style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:14px">Créneau</h3>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:9px">
+                <sc-for list="{{ slots }}" as="s" hint-placeholder-count="8">
+                  <button onClick="{{ s.select }}" style="{{ s.style }}">{{ s.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="background:rgba(20,20,24,.9);border:1px solid rgba(237,28,36,.3);padding:24px;position:sticky;top:0">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.08)">
+                <div style="{{ coachAvatarStyle }}">{{ coachInitials }}</div>
+                <div><div style="font-family:'Anton';font-size:20px;transform:skewX(-7deg)">{{ coachName }}</div><div style="font-size:12px;color:rgba(255,255,255,.5)">{{ coachRole }} · {{ coachRank }}</div></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:9px;font-size:13px;margin-bottom:18px">
+                <div style="display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,.5)">Session</span><span style="font-weight:700;text-align:right">{{ sessionLabel }}</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,.5)">Elo ciblé</span><span style="font-weight:700">{{ eloLabel }}</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,.5)">Quand</span><span style="font-weight:700;text-align:right">{{ whenLabel }}</span></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(255,255,255,.08);padding-top:16px;margin-bottom:18px">
+                <span style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)">Total</span>
+                <span style="font-family:'Anton';font-size:34px;color:#ED1C24;transform:skewX(-7deg)">{{ totalLabel }}</span>
+              </div>
+              <button onClick="{{ goPaiement }}" style="{{ reserveBtnStyle }}">Passer au paiement</button>
+              <p style="text-align:center;font-size:11px;color:rgba(255,255,255,.4);margin-top:10px">{{ reserveHint }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ============ PAIEMENT ============ -->
+    <sc-if value="{{ isPaiement }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Paiement" style="min-height:100%;padding:46px 24px 70px;animation:ccFadeUp .45s ease">
+        <div style="max-width:880px;margin:0 auto">
+          <div style="text-align:center;margin-bottom:30px">
+            <p style="font-size:12px;letter-spacing:3px;color:#ED1C24;text-transform:uppercase;font-weight:800">Étape 4 / 4</p>
+            <h2 style="font-family:'Anton';font-size:clamp(38px,7vw,64px);transform:skewX(-9deg);line-height:.9;margin:6px 0">PAIEMENT</h2>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start">
+            <div style="background:rgba(20,20,24,.78);border:1px solid rgba(255,255,255,.08);padding:26px">
+              <div style="display:flex;gap:9px;margin-bottom:24px">
+                <div style="flex:1;text-align:center;padding:13px;border:1px solid #ED1C24;background:rgba(237,28,36,.1);font-weight:800;font-size:13px;cursor:pointer">💳 Carte</div>
+                <div style="flex:1;text-align:center;padding:13px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);font-weight:700;font-size:13px;cursor:pointer" style-hover="border-color:rgba(255,255,255,.3)">PayPal</div>
+                <div style="flex:1;text-align:center;padding:13px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);font-weight:700;font-size:13px;cursor:pointer" style-hover="border-color:rgba(255,255,255,.3)">Apple Pay</div>
+              </div>
+              <label style="display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:7px">Numéro de carte</label>
+              <input value="4242 4242 4242 4242" inputMode="numeric" style="width:100%;background:#0c0c0f;border:1px solid rgba(255,255,255,.1);color:#fff;padding:13px 14px;font-size:15px;letter-spacing:1px;margin-bottom:16px;outline:none" style-focus="border-color:#ED1C24">
+              <div style="display:flex;gap:14px;margin-bottom:16px">
+                <div style="flex:1"><label style="display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:7px">Expiration</label><input value="12 / 27" style="width:100%;background:#0c0c0f;border:1px solid rgba(255,255,255,.1);color:#fff;padding:13px 14px;font-size:15px;outline:none" style-focus="border-color:#ED1C24"></div>
+                <div style="flex:1"><label style="display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:7px">CVC</label><input value="123" style="width:100%;background:#0c0c0f;border:1px solid rgba(255,255,255,.1);color:#fff;padding:13px 14px;font-size:15px;outline:none" style-focus="border-color:#ED1C24"></div>
+              </div>
+              <label style="display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:7px">Titulaire</label>
+              <input placeholder="NOM Prénom" style="width:100%;background:#0c0c0f;border:1px solid rgba(255,255,255,.1);color:#fff;padding:13px 14px;font-size:15px;margin-bottom:18px;outline:none" style-focus="border-color:#ED1C24">
+              <div style="display:flex;align-items:center;gap:9px;font-size:12px;color:rgba(255,255,255,.5)"><span style="color:#2ecc71">🔒</span> Paiement chiffré · aucune donnée stockée</div>
+            </div>
+            <div style="background:rgba(20,20,24,.9);border:1px solid rgba(237,28,36,.3);padding:24px;position:sticky;top:0">
+              <h3 style="font-family:'Anton';font-size:22px;transform:skewX(-7deg);margin-bottom:16px">RÉCAP</h3>
+              <div style="display:flex;flex-direction:column;gap:9px;font-size:13px;margin-bottom:16px">
+                <div style="display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,.5)">Coach</span><span style="font-weight:700">{{ coachName }}</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,.5)">Session</span><span style="font-weight:700;text-align:right">{{ sessionLabel }}</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,.5)">Quand</span><span style="font-weight:700;text-align:right">{{ whenLabel }}</span></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:7px;font-size:13px;border-top:1px solid rgba(255,255,255,.08);padding-top:14px;margin-bottom:14px">
+                <div style="display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,.5)">Sous-total</span><span>{{ subtotalLabel }}</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,.5)">Frais de service</span><span>{{ feesLabel }}</span></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(255,255,255,.08);padding-top:14px;margin-bottom:18px">
+                <span style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)">Total</span>
+                <span style="font-family:'Anton';font-size:34px;color:#ED1C24;transform:skewX(-7deg)">{{ totalLabel }}</span>
+              </div>
+              <button onClick="{{ pay }}" style="width:100%;font-family:'Archivo';font-weight:900;font-style:italic;font-size:16px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:#ED1C24;border:none;padding:16px;cursor:pointer;box-shadow:0 0 26px rgba(237,28,36,.45)" style-hover="background:#ff2b34">Payer {{ totalLabel }}</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ============ VALIDATION ============ -->
+    <sc-if value="{{ isConfirmation }}" hint-placeholder-val="{{ false }}">
+      
+    </sc-if>
+
+  <section data-screen-label="Validation paiement" style="min-height:100%;display:flex;align-items:center;justify-content:center;padding:60px 24px;animation:ccFadeIn .5s ease">
+        <div style="width:100%;max-width:480px;text-align:center">
+          <div style="width:104px;height:104px;margin:0 auto 22px;border-radius:50%;background:radial-gradient(circle,rgba(46,204,113,.25),transparent 70%);display:flex;align-items:center;justify-content:center;animation:ccPop .55s cubic-bezier(.2,1.4,.5,1)">
+            <div style="width:72px;height:72px;border-radius:50%;background:#2ecc71;display:flex;align-items:center;justify-content:center;font-size:38px;box-shadow:0 0 36px rgba(46,204,113,.6)">✓</div>
+          </div>
+          <h2 style="font-family:'Anton';font-size:clamp(40px,8vw,64px);transform:skewX(-9deg);line-height:.9">PAIEMENT VALIDÉ</h2>
+          <p style="color:rgba(255,255,255,.6);font-size:16px;margin:14px 0 26px;line-height:1.5">Ta session avec <span style="color:#fff;font-weight:800">{{ coachName }}</span> est confirmée.<br>Un lien Discord t'a été envoyé par mail.</p>
+          <div style="background:rgba(20,20,24,.85);border:1px solid rgba(255,255,255,.08);padding:22px;text-align:left;margin-bottom:26px">
+            <div style="display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="color:rgba(255,255,255,.5)">Référence</span><span style="font-weight:800;color:#ED1C24;letter-spacing:1px">{{ bookingRef }}</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="color:rgba(255,255,255,.5)">Coach</span><span style="font-weight:700">{{ coachName }} · {{ coachRole }}</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="color:rgba(255,255,255,.5)">Session</span><span style="font-weight:700">{{ sessionLabel }}</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="color:rgba(255,255,255,.5)">Quand</span><span style="font-weight:700">{{ whenLabel }}</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;padding:7px 0"><span style="color:rgba(255,255,255,.5)">Montant payé</span><span style="font-weight:800">{{ totalLabel }}</span></div>
+          </div>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+            <button onClick="{{ goAccueil }}" style="font-family:'Archivo';font-weight:900;font-style:italic;font-size:15px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:#ED1C24;border:none;padding:15px 32px;cursor:pointer;box-shadow:0 0 26px rgba(237,28,36,.45)" style-hover="background:#ff2b34">Retour à l'accueil</button>
+            <button onClick="{{ goElo }}" style="font-family:'Archivo';font-weight:900;font-style:italic;font-size:15px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.25);padding:15px 28px;cursor:pointer" style-hover="border-color:#fff">Réserver à nouveau</button>
+          </div>
+        </div>
+      </section></main>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;}}">
+class Component extends DCLogic {
+  state = { screen:'accueil', queue:'solo', eloKey:null, roleFilter:'all', coachId:null, sessionKey:'single', dayKey:null, slotKey:null, shopOpen:false, transRun:false, transToken:0 };
+
+  get SHOP(){ return [
+    {num:'I',label:'Accueil',sub:'Retour à la page d\u2019accueil',screen:'accueil'},
+    {num:'II',label:'Connexion',sub:'Se connecter / créer un compte',screen:'connexion'},
+    {num:'III',label:'Choisir son elo',sub:'Sélectionne ton rang actuel',screen:'elo'},
+    {num:'IV',label:'Trouver un coach',sub:'Parcours les coachs Challenger',screen:'coachs'},
+    {num:'V',label:'Réserver un coaching',sub:'Date, créneau & type de session',screen:'reservation'},
+    {num:'VI',label:'Paiement',sub:'Régler ta session',screen:'paiement'},
+    {num:'VII',label:'Validation',sub:'Confirmation de réservation',screen:'confirmation'}
+  ]; }
+
+  componentDidMount(){
+    const valid = ['accueil','connexion','elo','coachs','reservation','paiement','confirmation'];
+    try{ const s = JSON.parse(localStorage.getItem('cc_state')||'null'); if(s && s.screen){ if(!valid.includes(s.screen)) s.screen='accueil'; s.shopOpen=false; s.transRun=false; this.setState(s); } }catch(e){}
+  }
+  componentDidUpdate(){ try{ localStorage.setItem('cc_state', JSON.stringify(this.state)); }catch(e){} }
+
+  go(screen){ this.setState({ screen, shopOpen:false }); const m=document.querySelector('main'); if(m) m.scrollTop=0; }
+
+
+  get RANKS(){ return [
+    {key:'iron',label:'Fer',short:'IRON',sub:'IV → I',color:'#7a7a7a'},
+    {key:'bronze',label:'Bronze',short:'BRZ',sub:'IV → I',color:'#a0703f'},
+    {key:'silver',label:'Argent',short:'SLV',sub:'IV → I',color:'#9fb0bd'},
+    {key:'gold',label:'Or',short:'GOLD',sub:'IV → I',color:'#e0b23c'},
+    {key:'plat',label:'Platine',short:'PLAT',sub:'IV → I',color:'#34b6a8'},
+    {key:'emerald',label:'Émeraude',short:'EMR',sub:'IV → I',color:'#2ecc71'},
+    {key:'diamond',label:'Diamant',short:'DIA',sub:'IV → I',color:'#4aa3ff'},
+    {key:'master',label:'Maître',short:'MAST',sub:'+ LP',color:'#b14aff'},
+    {key:'gm',label:'Grand Maître',short:'GM',sub:'+ LP',color:'#ff5b5b'},
+    {key:'chall',label:'Challenger',short:'CHALL',sub:'Top ladder',color:'#f0c040'}
+  ]; }
+
+  get COACHES(){ return [
+    {id:'zaed',name:'ZÆD',role:'Mid',rank:'Challenger',hue:280,price:49,rating:'4.9',reviews:312,meta:'68% WR · 1.4k games',bio:'Spécialiste assassins & roams. On bosse ta pression de lane et tes timings de gank.'},
+    {id:'jgdiff',name:'JGDIFF',role:'Jungle',rank:'Challenger',hue:140,price:55,rating:'5.0',reviews:208,meta:'71% WR · 980 games',bio:'Pathing, tempo et contrôle d\u2019objectifs. Tu prendras le contrôle de la map.'},
+    {id:'adcgod',name:'ADCGOD',role:'ADC',rank:'Challenger',hue:0,price:45,rating:'4.9',reviews:421,meta:'66% WR · 2.1k games',bio:'Positionnement en teamfight & DPS maximisé. Arrête de mourir 2v2.'},
+    {id:'warden',name:'WARDEN',role:'Support',rank:'Grand Maître',hue:200,price:35,rating:'4.8',reviews:276,meta:'70% WR · 1.6k games',bio:'Vision, macro et engage. Le support qui carry sans toucher un kill.'},
+    {id:'topdog',name:'TOPDOG',role:'Top',rank:'Maître',hue:30,price:39,rating:'4.7',reviews:189,meta:'64% WR · 1.1k games',bio:'Matchups, gestion de wave et plays TP. La top devient ta force.'},
+    {id:'fractal',name:'FRACTAL',role:'Mid',rank:'Grand Maître',hue:320,price:42,rating:'4.8',reviews:233,meta:'67% WR · 1.3k games',bio:'Waveclear, CS et contrôle de tempo mid. Le fondamental avant le flashy.'}
+  ]; }
+
+  get DAYS(){ return [
+    {key:'d0',dow:'AUJ.',num:'29'},{key:'d1',dow:'LUN',num:'30'},{key:'d2',dow:'MAR',num:'01'},
+    {key:'d3',dow:'MER',num:'02'},{key:'d4',dow:'JEU',num:'03'},{key:'d5',dow:'VEN',num:'04'}
+  ]; }
+  get SLOTS(){ return ['10:00','11:30','13:00','14:30','16:00','18:00','20:00','21:30']; }
+  get SESSIONS(){ return [
+    {key:'single',label:'Session unique',desc:'1h de coaching live en VOD review',mult:1},
+    {key:'duo',label:'Duo Boost +Coach',desc:'2h en game live à tes côtés',mult:1.9},
+    {key:'pack',label:'Pack 5 sessions',desc:'5h · suivi complet & plan de progression',mult:4.3}
+  ]; }
+  get ROLE_FILTERS(){ return [
+    {key:'all',label:'Tous'},{key:'Top',label:'Top'},{key:'Jungle',label:'Jungle'},
+    {key:'Mid',label:'Mid'},{key:'ADC',label:'ADC'},{key:'Support',label:'Support'}
+  ]; }
+
+  fmt(n){ return (Math.round(n*100)/100).toFixed(0) + '€'; }
+
+  get PARTICLES(){
+    if(this._parts) return this._parts;
+    let s=8731; const rnd=()=>{ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; };
+    const arr=[];
+    for(let i=0;i<54;i++){
+      const size=2+Math.round(rnd()*4);
+      arr.push({ left:(rnd()*100).toFixed(1), top:(58+rnd()*44).toFixed(1), size, op:(0.45+rnd()*0.45).toFixed(2), dur:(8+rnd()*11).toFixed(1), delay:(rnd()*11).toFixed(1) });
+    }
+    this._parts=arr; return arr;
+  }
+
+  renderVals(){
+    const st = this.state;
+    const go = (s)=>()=>this.go(s);
+    const screen = st.screen;
+
+    // page backgrounds (crossfade layers)
+    const bgMap = { accueil:'bg1', connexion:'bg2', elo:'bg4', coachs:'bg3', reservation:'bg4', paiement:'bg2', confirmation:'bg1' };
+    const activeBg = bgMap[screen] || 'bg1';
+    const bgLayers = ['bg1','bg2','bg3','bg4'].map(name=>({
+      style:{ position:'absolute', inset:'-24px', backgroundImage:"url('assets/"+name+".jpg')", backgroundPosition:'center', backgroundSize:'cover', backgroundRepeat:'no-repeat', filter:'blur(3px) brightness(.5) saturate(1.18)', transform:'scale(1.06)', opacity: name===activeBg ? 1 : 0, transition:'opacity .7s ease' }
+    }));
+    const particles = this.PARTICLES.map(p=>({
+      style:{ position:'absolute', left:p.left+'%', top:p.top+'%', width:p.size+'px', height:p.size+'px', borderRadius:'50%', background:'rgba(237,28,36,'+p.op+')', boxShadow:'0 0 '+(p.size*2.4)+'px rgba(237,28,36,.85)', animation:'ccEmber '+p.dur+'s linear '+p.delay+'s infinite' }
+    }));
+
+    const selectedRank = this.RANKS.find(r=>r.key===st.eloKey);
+    const coach = this.COACHES.find(c=>c.id===st.coachId) || null;
+    const session = this.SESSIONS.find(s=>s.key===st.sessionKey) || this.SESSIONS[0];
+    const day = this.DAYS.find(d=>d.key===st.dayKey);
+
+    const subtotal = coach ? coach.price * session.mult : 0;
+    const fees = coach ? 2 : 0;
+    const total = subtotal + fees;
+
+    // ranks
+    const ranks = this.RANKS.map(r=>{
+      const sel = r.key===st.eloKey;
+      return { ...r,
+        select:()=>{ this.setState({eloKey:r.key}); this.go('coachs'); },
+        style:{ display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'20px 10px',cursor:'pointer',background:sel?'rgba(237,28,36,.12)':'rgba(20,20,24,.7)',border:sel?'1px solid #ED1C24':'1px solid rgba(255,255,255,.08)',color:'#fff',transition:'all .15s',boxShadow:sel?'0 0 22px rgba(237,28,36,.35)':'none' },
+        badgeStyle:{ width:'48px',height:'48px',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Archivo'",fontWeight:900,fontSize:'12px',letterSpacing:'.5px',color:'#08080a',background:r.color,clipPath:'polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)' }
+      };
+    });
+
+    // role filters
+    const roleFilters = this.ROLE_FILTERS.map(f=>{
+      const sel = f.key===st.roleFilter;
+      return { ...f, select:()=>this.setState({roleFilter:f.key}),
+        style:{ fontFamily:"'Archivo'",fontWeight:800,fontSize:'13px',letterSpacing:'.5px',padding:'9px 18px',cursor:'pointer',textTransform:'uppercase',color:sel?'#fff':'rgba(255,255,255,.55)',background:sel?'#ED1C24':'transparent',border:sel?'1px solid #ED1C24':'1px solid rgba(255,255,255,.14)' } };
+    });
+
+    // coaches (filtered)
+    const filtered = this.COACHES.filter(c=> st.roleFilter==='all' || c.role===st.roleFilter );
+    const coaches = filtered.map(c=>{
+      const sel = c.id===st.coachId;
+      return { ...c, initials:c.name.slice(0,2), priceLabel:c.price+'€',
+        select:()=>{ this.setState({coachId:c.id}); this.go('reservation'); },
+        cardStyle:{ background:sel?'rgba(237,28,36,.08)':'rgba(20,20,24,.78)',border:sel?'1px solid #ED1C24':'1px solid rgba(255,255,255,.08)',padding:'20px',display:'flex',flexDirection:'column',transition:'all .15s' },
+        avatarStyle:{ width:'52px',height:'52px',flex:'0 0 auto',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Anton'",fontSize:'18px',transform:'skewX(-7deg)',color:'#fff',background:'linear-gradient(135deg,hsl('+c.hue+',60%,42%),hsl('+((c.hue+40)%360)+',55%,28%))',clipPath:'polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)' },
+        rankPillStyle:{ fontFamily:"'Archivo'",fontWeight:800,fontSize:'10px',letterSpacing:'.5px',textTransform:'uppercase',color:'#08080a',background:'#f0c040',padding:'2px 7px' }
+      };
+    });
+
+    // session types
+    const sessionTypes = this.SESSIONS.map(t=>{
+      const sel = t.key===st.sessionKey;
+      const p = coach ? coach.price*t.mult : 0;
+      return { ...t, priceLabel: coach? this.fmt(p) : '—', select:()=>this.setState({sessionKey:t.key}),
+        style:{ display:'flex',alignItems:'center',justifyContent:'space-between',gap:'14px',textAlign:'left',padding:'15px 16px',cursor:'pointer',color:'#fff',background:sel?'rgba(237,28,36,.1)':'#0c0c0f',border:sel?'1px solid #ED1C24':'1px solid rgba(255,255,255,.1)' } };
+    });
+
+    // days
+    const days = this.DAYS.map(d=>{
+      const sel = d.key===st.dayKey;
+      return { ...d, select:()=>this.setState({dayKey:d.key}),
+        style:{ display:'flex',flexDirection:'column',alignItems:'center',gap:'2px',padding:'10px 14px',cursor:'pointer',color:'#fff',minWidth:'62px',background:sel?'rgba(237,28,36,.12)':'#0c0c0f',border:sel?'1px solid #ED1C24':'1px solid rgba(255,255,255,.1)' } };
+    });
+
+    // slots
+    const slots = this.SLOTS.map(s=>{
+      const sel = s===st.slotKey;
+      return { label:s, select:()=>this.setState({slotKey:s}),
+        style:{ fontFamily:"'Archivo'",fontWeight:700,fontSize:'14px',padding:'11px 4px',textAlign:'center',cursor:'pointer',color:sel?'#fff':'rgba(255,255,255,.75)',background:sel?'#ED1C24':'#0c0c0f',border:sel?'1px solid #ED1C24':'1px solid rgba(255,255,255,.1)' } };
+    });
+
+    const canReserve = !!(st.dayKey && st.slotKey);
+    const whenLabel = (day && st.slotKey) ? (day.dow+' '+day.num+' · '+st.slotKey) : 'À choisir';
+
+    const eloLabel = selectedRank ? selectedRank.label : 'Non défini';
+    const ref = 'CC-' + ((st.coachId||'') + (st.dayKey||'') + (st.slotKey||'') + (st.eloKey||'')).split('').reduce((a,ch)=>(a*31+ch.charCodeAt(0))>>>0,7).toString(36).toUpperCase().slice(0,6);
+
+    // ---- MENU 3D NODES ----
+    const goReserve = ()=> coach ? this.go('reservation') : this.go('coachs');
+    const goPanier = ()=> (coach && st.dayKey && st.slotKey) ? this.go('paiement') : (coach ? this.go('reservation') : this.go('coachs'));
+    const nodeDefs = [
+      {label:'Accueil',tag:'Nexus',left:18,top:82,accent:'60,120,230',go:()=>this.go('accueil')},
+      {label:'Choisir son elo',tag:'Étape 1',left:32,top:28,accent:'240,192,64',go:()=>this.go('elo')},
+      {label:'Trouver un coach',tag:'Étape 2',left:50,top:50,accent:'237,28,36',go:()=>this.go('coachs')},
+      {label:'Réserver',tag:'Étape 3',left:70,top:72,accent:'237,28,36',go:goReserve},
+      {label:'Panier & paiement',tag:'Étape 4',left:84,top:18,accent:'177,74,255',go:goPanier}
+    ];
+    const menuNodes = nodeDefs.map(n=>{
+      const up = 'translate(-50%,-100%) rotateX(-56deg)';
+      return { label:n.label, tag:n.tag, go:n.go,
+        groupStyle:{ position:'absolute',left:n.left+'%',top:n.top+'%',width:0,height:0,transformStyle:'preserve-3d',zIndex:3 },
+        discStyle:{ position:'absolute',left:'50%',top:'50%',width:'104px',height:'104px',transform:'translate(-50%,-50%)',borderRadius:'50%',background:'radial-gradient(circle,rgba('+n.accent+',.5),transparent 66%)',animation:'ccRiftGlow 3s ease-in-out infinite' },
+        billStyle:{ position:'absolute',left:'50%',top:'50%',transformOrigin:'50% 100%',transform:up,width:'148px',padding:'13px 10px 12px',textAlign:'center',cursor:'pointer',background:'rgba(14,14,18,.94)',border:'1px solid rgba('+n.accent+',.7)',boxShadow:'0 0 26px rgba('+n.accent+',.4)',clipPath:'polygon(11px 0,100% 0,100% calc(100% - 11px),calc(100% - 11px) 100%,0 100%,0 11px)' },
+        billHover:{ transform:up+' translateY(-18px) scale(1.06)', boxShadow:'0 18px 46px rgba('+n.accent+',.6)', background:'rgba(22,22,28,.98)' },
+        billActive:{ transform:up+' translateY(-6px) scale(.98)' },
+        tagStyle:{ fontSize:'10px',letterSpacing:'2px',textTransform:'uppercase',fontWeight:800,color:'rgb('+n.accent+')' }
+      };
+    });
+
+    const queueTab = (active)=>({ fontFamily:"'Archivo'",fontWeight:800,fontStyle:'italic',fontSize:'13px',letterSpacing:'1px',textTransform:'uppercase',padding:'9px 26px',cursor:'pointer',border:'none',color:active?'#fff':'rgba(255,255,255,.5)',background:active?'#ED1C24':'transparent' });
+
+    // stepper
+    const stepDefs = [ {label:'Elo',scr:'elo'},{label:'Coach',scr:'coachs'},{label:'Réserver',scr:'reservation'},{label:'Paiement',scr:'paiement'} ];
+    const order = ['elo','coachs','reservation','paiement','confirmation'];
+    const curIdx = order.indexOf(screen);
+    const steps = stepDefs.map((s,i)=>{
+      const done = curIdx>i, active = curIdx===i;
+      const on = done||active;
+      return { label:s.label,
+        dotStyle:{ width:'9px',height:'9px',transform:'rotate(45deg)',background:on?'#ED1C24':'rgba(255,255,255,.2)',boxShadow:active?'0 0 10px rgba(237,28,36,.8)':'none' },
+        labelStyle:{ fontSize:'11px',letterSpacing:'1px',textTransform:'uppercase',marginRight:'10px',fontWeight:active?800:600,color:on?'#fff':'rgba(255,255,255,.4)' } };
+    });
+
+    return {
+      isAccueil: screen==='accueil', isConnexion: screen==='connexion', isElo: screen==='elo',
+      isCoachs: screen==='coachs', isReservation: screen==='reservation', isPaiement: screen==='paiement',
+      isConfirmation: screen==='confirmation', isMenu: screen==='menu',
+      showStepper: ['elo','coachs','reservation','paiement'].includes(screen),
+      showAuthBtn: screen==='accueil',
+      steps, menuNodes, bgLayers, particles,
+      shopOpen: st.shopOpen,
+      openShop: ()=>this.setState({shopOpen:true}),
+      closeShop: ()=>this.setState({shopOpen:false}),
+      stopProp: (e)=>{ if(e && e.stopPropagation) e.stopPropagation(); },
+      shopItems: this.SHOP.map(it=>({ ...it, go: ()=>this.go(it.screen) })),
+      goAccueil: go('accueil'), goConnexion: go('connexion'), goMenu: go('menu'),
+      goCoachs: go('coachs'),
+      goElo: go('elo'),
+      goPaiement: ()=>{ if(canReserve) this.go('paiement'); },
+      pay: go('confirmation'),
+
+      heroStats: [ {value:'12K+',label:'Joueurs coachés'},{value:'+3',label:'Divisions / mois'},{value:'4.9★',label:'Note moyenne'} ],
+
+      queue: st.queue, setSolo:()=>this.setState({queue:'solo'}), setFlex:()=>this.setState({queue:'flex'}),
+      soloTabStyle: queueTab(st.queue==='solo'), flexTabStyle: queueTab(st.queue==='flex'),
+      queueLabel: st.queue==='solo'?'SoloQ':'Flex',
+
+      ranks, roleFilters, coaches, sessionTypes, days, slots,
+
+      eloLabel,
+      coachName: coach? coach.name : '—', coachRole: coach? coach.role : '', coachRank: coach? coach.rank : '',
+      coachInitials: coach? coach.name.slice(0,2) : '',
+      coachAvatarStyle: { width:'46px',height:'46px',flex:'0 0 auto',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Anton'",fontSize:'16px',transform:'skewX(-7deg)',color:'#fff',background: coach? 'linear-gradient(135deg,hsl('+coach.hue+',60%,42%),hsl('+((coach.hue+40)%360)+',55%,28%))':'#333',clipPath:'polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)' },
+      sessionLabel: session.label,
+      whenLabel,
+      totalLabel: coach? this.fmt(total):'—',
+      subtotalLabel: coach? this.fmt(subtotal):'—',
+      feesLabel: this.fmt(fees),
+
+      reserveBtnStyle: { width:'100%',fontFamily:"'Archivo'",fontWeight:900,fontStyle:'italic',fontSize:'16px',letterSpacing:'1.5px',textTransform:'uppercase',color:'#fff',border:'none',padding:'16px',cursor: canReserve?'pointer':'not-allowed',background: canReserve?'#ED1C24':'rgba(237,28,36,.3)',boxShadow: canReserve?'0 0 26px rgba(237,28,36,.45)':'none',opacity: canReserve?1:.7 },
+      reserveHint: canReserve? 'Annulation gratuite jusqu\u2019à 24h avant' : 'Choisis une date et un créneau',
+
+      bookingRef: ref
+    };
+  }
+}
+</script>
+</body>
+</html>
